@@ -94,14 +94,13 @@ async def _fetch_via_playwright():
                 cols = await row.query_selector_all("td")
                 if len(cols) >= 3 and count < 10:
                     rank = (await cols[0].inner_text()).strip()
-                    # Try different column indices for model name
-                    model_name = ""
-                    for idx in [1, 2]:
-                        if idx < len(cols):
-                            model_name = (await cols[idx].inner_text()).split('\n')[0].strip()
-                            if model_name and model_name != rank:
-                                break
-                    score = (await cols[-1].inner_text()).split('\n')[0].strip()
+                    # In the new table structure:
+                    # cols[0] = Rank
+                    # cols[1] = Rank Spread
+                    # cols[2] = Model Name
+                    # cols[3] = Elo Rating
+                    model_name = (await cols[2].inner_text()).split('\n')[0].strip()
+                    score = (await cols[3].inner_text()).split('\n')[0].strip()
 
                     if rank and model_name:
                         table_md += f"| #{rank} | **{model_name}** | {score} |\n"
