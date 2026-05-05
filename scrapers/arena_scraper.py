@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Primary domain (moved from arena.lmsys.org)
-ARENA_URL = "https://arena.ai/leaderboard/text"
+ARENA_URL = "https://arena.ai/leaderboard/text/overall"
 
 
 async def fetch_arena_leaderboard():
