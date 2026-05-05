@@ -1,9 +1,12 @@
 import asyncio
+from dotenv import load_dotenv
 from scrapers.rss_scraper import fetch_rss_news
 from scrapers.arena_scraper import fetch_arena_leaderboard
 from summarizer import summarize_news, summarize_leaderboard
 from emailer import send_email_newsletter
 
+# Load environment variables from .env file
+load_dotenv()
 
 async def main():
     print("Starting AI News Bot...")

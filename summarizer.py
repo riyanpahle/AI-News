@@ -1,24 +1,31 @@
 import os
-from openai import OpenAI
+from groq import Groq
 from dotenv import load_dotenv
 
 load_dotenv()
+
+client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
+MODEL = "llama-3.3-70b-versatile"
+
 
 def summarize_news(news_items):
     """
     Curates and ranks AI news items using the daily curation prompt.
     """
+    # Limit to top 20 articles to stay within Groq free tier token limits
+    news_items = news_items[:20]
+
     if not news_items:
         return "No new AI news found for the last 24 hours."
-
-    client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
     # Prepare the articles for the prompt
     articles_text = ""
     for item in news_items:
         articles_text += f"Sumber: {item.get('source', 'Unknown')}\n"
         articles_text += f"Judul: {item.get('title', 'No Title')}\n"
-        articles_text += f"Ringkasan: {item.get('raw_summary', 'No summary available')}\n"
+        # Truncate summary to 200 chars to conserve tokens
+        raw = item.get('raw_summary', 'No summary available')
+        articles_text += f"Ringkasan: {raw[:200]}\n"
         articles_text += f"Link: {item.get('url', '#')}\n"
         articles_text += "-------------------\n"
 
@@ -29,11 +36,11 @@ def summarize_news(news_items):
         "Tugasmu:\n"
         "- Pilih TEPAT 5 artikel paling penting\n"
         "- Urutkan dari yang paling prioritas ke paling rendah menggunakan hierarki ini:\n\n"
-        "  P1 → Rilis atau pengumuman model AI baru dari lab besar (OpenAI, Anthropic, Google, Meta, Mistral, xAI)\n"
-        "  P2 → Riset atau breakthrough teknikal yang signifikan\n"
-        "  P3 → Bisnis, funding besar (>$50M), atau akuisisi terkait AI\n"
-        "  P4 → Regulasi dan kebijakan AI dari pemerintah\n"
-        "  P5 → Tren, laporan industri, atau analisis dari tokoh berpengaruh\n\n"
+        "  P1 -> Rilis atau pengumuman model AI baru dari lab besar (OpenAI, Anthropic, Google, Meta, Mistral, xAI)\n"
+        "  P2 -> Riset atau breakthrough teknikal yang signifikan\n"
+        "  P3 -> Bisnis, funding besar (>$50M), atau akuisisi terkait AI\n"
+        "  P4 -> Regulasi dan kebijakan AI dari pemerintah\n"
+        "  P5 -> Tren, laporan industri, atau analisis dari tokoh berpengaruh\n\n"
         "Aturan seleksi:\n"
         "- Jika ada 2 artikel tentang topik yang sama, pilih yang paling lengkap dan buang yang lain\n"
         "- Utamakan berita dari sumber resmi lab AI dibanding media pihak ketiga\n"
@@ -51,29 +58,29 @@ def summarize_news(news_items):
 
     try:
         response = client.chat.completions.create(
-            model="gpt-4o-mini",
+            model=MODEL,
             messages=[
                 {"role": "system", "content": "You are a professional AI news curator delivering high-quality summaries in Indonesian."},
                 {"role": "user", "content": prompt}
             ],
-            temperature=0.5
+            temperature=0.5,
+            max_tokens=2048
         )
         return response.choices[0].message.content
     except Exception as e:
-        print(f"Error during OpenAI summarization: {e}")
+        print(f"Error during Groq summarization: {e}")
         return "Gagal mengkurasi berita hari ini. Mohon coba lagi nanti."
+
 
 def summarize_leaderboard(current_data, previous_data):
     """
     Updates AI model leaderboard ranking and highlights changes.
     """
     if not current_data:
-        return "No leaderboard data available."
-
-    client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
+        return "<p>Leaderboard update currently unavailable.</p>"
 
     prompt = (
-        "Tandai model yang posisinya naik (↑), turun (↓), atau baru masuk (🆕) dibanding data sebelumnya:\n\n"
+        "Tandai model yang posisinya naik, turun, atau baru masuk dibanding data sebelumnya:\n\n"
         f"Data Leaderboard Sekarang: {current_data}\n\n"
         f"Data Leaderboard Kemarin: {previous_data}\n\n"
         "1. Tulis 2-3 kalimat highlight: model mana yang paling menarik perhatian hari ini dan mengapa\n"
@@ -83,12 +90,13 @@ def summarize_leaderboard(current_data, previous_data):
 
     try:
         response = client.chat.completions.create(
-            model="gpt-4o-mini",
+            model=MODEL,
             messages=[
                 {"role": "system", "content": "You are an AI leaderboard analyst providing concise updates in HTML format."},
                 {"role": "user", "content": prompt}
             ],
-            temperature=0.3
+            temperature=0.3,
+            max_tokens=1024
         )
         return response.choices[0].message.content
     except Exception as e:
