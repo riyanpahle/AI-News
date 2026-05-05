@@ -34,7 +34,7 @@ async def main():
     arena_summary = summarize_leaderboard(arena_news, previous_data=None)
     
     # Combine everything for the email
-    full_content = f"{news_summary}\n\n<hr>\n\n<h2>🏆 Chatbot Arena Update</h2>\n{arena_summary}"
+    full_content = f"{news_summary}\n\n<hr>\n\n<h2>🏆 LMSYS Chatbot Arena Top 10 Leaderboard</h2>\n<span class=\"source\"><b>Source:</b> LMSYS Arena | <b>Published:</b> Update Terbaru</span>\n{arena_summary}"
     
     # 5. Send the summary via email
     print("Sending email...")

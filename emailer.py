@@ -35,20 +35,20 @@ def send_email_newsletter(content):
       <head>
         <style>
           body {{ 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             line-height: 1.6; 
             color: #e2e8f0; 
-            background-color: #0f172a;
+            background-color: #f1f5f9; /* Outer background to contrast the dark container */
             margin: 0;
             padding: 40px 20px;
           }}
           .container {{
-            max-width: 650px;
+            max-width: 680px;
             margin: 0 auto;
-            background-color: #1e293b;
+            background-color: #1e293b; /* Dark slate background */
             padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
           }}
           p, span, div {{
             color: #e2e8f0;
@@ -57,79 +57,108 @@ def send_email_newsletter(content):
             color: #94a3b8 !important;
             font-style: italic;
           }}
-          h1 {{ 
+          h1.main-title {{ 
             color: #f8fafc; 
             text-align: center;
-            border-bottom: 2px solid #334155;
+            border-bottom: 1px solid #334155;
             padding-bottom: 20px;
-            margin-bottom: 25px;
-            font-size: 28px;
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 26px;
+            font-weight: 700;
           }}
-          h2, h3 {{ 
-            color: #f8fafc; 
-            margin-top: 25px;
-            margin-bottom: 10px;
+          .auto-note {{
+            text-align: center;
+            color: #64748b;
+            font-size: 0.9em;
+            font-style: italic;
+            margin-bottom: 30px;
+          }}
+          h2 {{
+            color: #38bdf8;
+            margin-top: 30px;
+            margin-bottom: 15px;
             font-size: 22px;
           }}
-          a {{ 
+          h3 {{ 
+            color: #38bdf8; 
+            margin-top: 25px;
+            margin-bottom: 5px;
+            font-size: 20px;
+          }}
+          h3 a, h2 a {{ 
             color: #38bdf8 !important; 
             text-decoration: none; 
-            font-weight: 600;
           }}
-          a:hover {{ text-decoration: underline; color: #7dd3fc !important; }}
+          h3 a:hover, h2 a:hover {{ text-decoration: underline; }}
+          
           .source {{ 
             color: #cbd5e1 !important; 
-            font-size: 0.9em; 
+            font-size: 0.85em; 
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
+          }}
+          .source b {{
+            color: #e2e8f0;
           }}
           .summary {{ 
-            margin-bottom: 15px; 
-            color: #e2e8f0;
-            background-color: #334155;
-            padding: 15px;
+            margin-bottom: 25px; 
+            color: #cbd5e1;
+            background-color: #273548; /* Slightly lighter than container */
+            padding: 16px;
             border-left: 4px solid #38bdf8;
-            border-radius: 0 4px 4px 0;
-            overflow-x: auto;
+            border-radius: 4px;
+            font-size: 0.95em;
           }}
           hr {{
             border: 0;
             height: 1px;
-            background: #475569;
-            margin: 20px 0;
+            background: #334155;
+            margin: 30px 0;
           }}
           .footer {{
             text-align: center;
-            margin-top: 30px;
+            margin-top: 40px;
             font-size: 0.85em;
-            color: #94a3b8;
+            color: #64748b;
           }}
           /* Table Styles */
           table {{
             width: 100%;
             border-collapse: collapse;
-            margin: 10px 0;
+            margin: 15px 0;
             font-size: 0.95em;
             color: #e2e8f0;
           }}
           table th, table td {{
-            padding: 10px 12px;
+            padding: 12px 15px;
             text-align: left;
-            border-bottom: 1px solid #475569;
+            border-bottom: 1px solid #334155;
           }}
           table th {{
-            background-color: #0f172a;
             color: #38bdf8;
             font-weight: 600;
+            border-bottom: 2px solid #334155;
           }}
           table tr:hover {{
-            background-color: rgba(255, 255, 255, 0.05);
+            background-color: #273548;
+          }}
+          table td:first-child {{
+            color: #94a3b8;
+          }}
+          table td:nth-child(2) {{
+            font-weight: bold;
+            color: #f8fafc;
           }}
         </style>
       </head>
       <body>
         <div class="container">
+          <h1 class="main-title">🚀 Daily AI News Summary</h1>
+          <div class="auto-note">Note: This is an automatically generated digest.</div>
+          
           {html_content}
+          
           <div class="footer">
             <p>Sent by Daily AI News Bot 🤖</p>
           </div>

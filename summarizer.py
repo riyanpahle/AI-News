@@ -45,15 +45,16 @@ def summarize_news(news_items):
         "- Jika ada 2 artikel tentang topik yang sama, pilih yang paling lengkap dan buang yang lain\n"
         "- Utamakan berita dari sumber resmi lab AI dibanding media pihak ketiga\n"
         "- Abaikan artikel yang hanya opini tanpa data atau fakta baru\n\n"
-        "Tulis output dalam format ini untuk setiap artikel:\n\n"
-        "[Urutan N] P[1-5] | [Nama Sumber]\n"
-        "Judul: ...\n"
-        "Ringkasan: (2-3 kalimat, langsung ke inti, bahasa Indonesia)\n"
-        "Kenapa penting: (1 kalimat)\n"
-        "Link: ...\n\n"
-        "Setelah 5 artikel, tambahkan:\n\n"
-        "TREND HARI INI:\n"
-        "(1 paragraf singkat tentang pola atau tema besar yang muncul dari berita hari ini)"
+        "Tulis output secara PERSIS dalam format HTML ini untuk setiap artikel (jangan gunakan format markdown, cukup raw HTML):\n\n"
+        "<h3><a href=\"[Link]\">[Judul Artikel]</a></h3>\n"
+        "<div class=\"source\"><b>Source:</b> [Nama Sumber] | <b>Priority:</b> P[1-5]</div>\n"
+        "<div class=\"summary\">\n"
+        "  [Ringkasan 2-3 kalimat, langsung ke inti, bahasa Indonesia]<br><br>\n"
+        "  <i>Kenapa penting: [1 kalimat]</i>\n"
+        "</div>\n\n"
+        "Setelah 5 artikel, tambahkan tren hari ini dalam format HTML:\n\n"
+        "<h2>📈 Trend Hari Ini</h2>\n"
+        "<div class=\"summary\">[1 paragraf singkat tentang pola atau tema besar yang muncul dari berita hari ini]</div>"
     )
 
     try:
@@ -85,7 +86,9 @@ def summarize_leaderboard(current_data, previous_data):
         f"Data Leaderboard Kemarin: {previous_data}\n\n"
         "1. Tulis 2-3 kalimat highlight: model mana yang paling menarik perhatian hari ini dan mengapa\n"
         "2. Jika tidak ada perubahan signifikan, cukup tulis 'Tidak ada perubahan ranking signifikan hari ini'\n"
-        "Format output: HTML siap embed di email, gunakan tabel sederhana."
+        "Format output:\n"
+        "<div class=\"summary\">[Highlight/Summary]</div>\n"
+        "Kemudian, buat ulang tabel leaderboard dalam format HTML murni menggunakan tag <table>, <thead>, <tr>, <th>, <tbody>, dan <td>. Pastikan nama model ditebalkan dengan tag <b>."
     )
 
     try:
