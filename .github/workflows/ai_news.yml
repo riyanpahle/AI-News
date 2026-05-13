@@ -2,7 +2,7 @@ name: Daily AI News Bot
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # Runs at 00:00 UTC = 07:00 WIB every day
+    - cron: '17 0 * * *'  # Runs at 00:17 UTC = 07:17 WIB every day
   workflow_dispatch: # Allows manual triggering
 
 jobs:

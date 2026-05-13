@@ -12,8 +12,8 @@ def summarize_news(news_items):
     """
     Curates and ranks AI news items using the daily curation prompt.
     """
-    # Limit to top 20 articles to stay within Groq free tier token limits
-    news_items = news_items[:20]
+    # Limit to top 50 articles to capture more news before prioritizing
+    news_items = news_items[:50]
 
     if not news_items:
         return "No new AI news found for the last 24 hours."
@@ -36,15 +36,16 @@ def summarize_news(news_items):
         "Tugasmu:\n"
         "- Pilih TEPAT 5 artikel paling penting\n"
         "- Urutkan dari yang paling prioritas ke paling rendah menggunakan hierarki ini:\n\n"
-        "  P1 -> Rilis atau pengumuman model AI baru dari lab besar (OpenAI, Anthropic, Google, Meta, Mistral, xAI)\n"
-        "  P2 -> Riset atau breakthrough teknikal yang signifikan\n"
-        "  P3 -> Bisnis, funding besar (>$50M), atau akuisisi terkait AI\n"
-        "  P4 -> Regulasi dan kebijakan AI dari pemerintah\n"
-        "  P5 -> Tren, laporan industri, atau analisis dari tokoh berpengaruh\n\n"
+        "  P1 -> Rilis resmi, bocoran (leak), atau eksperimen internal (dogfooding) model AI baru dari lab besar (Google, OpenAI, Anthropic, DeepSeek)\n"
+        "  P2 -> Rilis AI baru atau pergerakan yang berpotensi menyalip AI dari lab besar (bisa dilihat korelasinya dengan pergerakan Leaderboard)\n"
+        "  P3 -> Riset atau breakthrough teknikal yang signifikan\n"
+        "  P4 -> Bisnis, funding besar (>$50M), atau akuisisi terkait AI\n"
+        "  P5 -> Regulasi, tren, atau laporan industri\n\n"
         "Aturan seleksi:\n"
-        "- Jika ada 2 artikel tentang topik yang sama, pilih yang paling lengkap dan buang yang lain\n"
-        "- Utamakan berita dari sumber resmi lab AI dibanding media pihak ketiga\n"
-        "- Abaikan artikel yang hanya opini tanpa data atau fakta baru\n\n"
+        "- Fokus utamakan berita dari dan tentang: Google, OpenAI, Anthropic, dan DeepSeek.\n"
+        "- Jangan abaikan rumor kuat atau eksperimen agen AI internal dari perusahaan tersebut.\n"
+        "- Jika ada 2 artikel tentang topik yang sama, pilih yang paling lengkap dan buang yang lain.\n"
+        "- Abaikan artikel yang hanya opini tanpa data atau fakta baru.\n\n"
         "Tulis output secara PERSIS dalam format HTML ini untuk setiap artikel (jangan gunakan format markdown, cukup raw HTML):\n\n"
         "<h3><a href=\"[Link]\">[Judul Artikel]</a></h3>\n"
         "<div class=\"source\"><b>Source:</b> [Nama Sumber] | <b>Priority:</b> P[1-5]</div>\n"

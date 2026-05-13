@@ -53,7 +53,7 @@ AI_KEYWORDS = [
     "llm", "large language model", "gpt", "claude", "gemini", "mistral",
     "neural network", "transformer", "diffusion", "generative", "openai",
     "anthropic", "deepmind", "model", "chatbot", "inference", "fine-tuning",
-    "benchmark", "multimodal", "reasoning", "agent",
+    "benchmark", "multimodal", "reasoning", "agent", "deepseek"
 ]
 
 
